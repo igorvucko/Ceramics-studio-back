@@ -24,8 +24,8 @@ name: body.name,
           quantity: 1,
         },
       ],
-success_url: 'http://localhost:3000/success',
-cancel_url: `http://localhost:3000/product/${body.slug}`,
+success_url: '${process.env.FRONTEND_URL}/success',
+cancel_url: `http://localhost:3001/product/${body.slug}`,
     });
 
     return { url: session.url };

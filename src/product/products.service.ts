@@ -4,6 +4,11 @@ import { Product } from '@prisma/client';
 
 @Injectable()
 export class ProductsService {
+ async remove(id: number) {
+  return this.prisma.product.delete({
+    where: { id },
+  });
+}
   constructor(private prisma: PrismaService) {}
 
   async findAll(): Promise<Product[]> {
