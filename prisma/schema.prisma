@@ -8,9 +8,21 @@ datasource db {
 }
 
 model Product {
-  id     Int    @id @default(autoincrement())
+  id     Int     @id @default(autoincrement())
   name   String
   price  String
   image  String
-  slug   String @unique
+  slug   String  @unique
+  description String?
+  details     String?
+  orders Order[]
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int
+  quantity  Int
+  total     String
+  createdAt DateTime @default(now())
 }
