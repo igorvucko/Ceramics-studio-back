@@ -11,15 +11,21 @@ export class AuthService {
     private usersService: UsersService
   ) {}
 
+  async validateUser(loginDto: LoginDto): Promise<string | null> {
+    const user = await this.usersService.findByUsername(loginDto.username);
 
-async validateUser(loginDto: LoginDto): Promise<string | null> {
-  const user = await this.usersService.findByUsername(loginDto.username);
-  if (!user) return null;
+    // Debug ispis – ukloni kad potvrdiš da radi
+    console.log('🧪 Korisnik iz baze:', user);
 
- const isValid = loginDto.password === user.password;
-  if (!isValid) return null;
+    if (!user) return null;
+
+    const isValid = await bcrypt.compare(loginDto.password, user.password);
+
+
+
+    if (!isValid) return null;
 
 const payload = { username: user.username, sub: user.id };
-  return this.jwtService.sign(payload);
-}
+    return this.jwtService.sign(payload);
+  }
 }
