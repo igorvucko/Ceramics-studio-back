@@ -3,10 +3,16 @@ import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { LoginDto } from './login.dto';
 
+
+
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
-
+  @Post('logout')
+    logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('token');
+    return { message: 'Odjava uspješna' };
+}
   @Post('login')
   async login(
     @Res({ passthrough: true }) res: Response,
