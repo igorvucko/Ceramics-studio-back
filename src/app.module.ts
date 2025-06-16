@@ -7,8 +7,17 @@ import { OrderModule } from './order/order.module';
 import { ConfigModule } from '@nestjs/config';
 import { ImageModule } from './image/image.module';
 import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { PrismaModule } from './prisma/prisma.module';
  @Module({
-  imports: [AuthModule,ImageModule,ProductsModule,OrderModule,ConfigModule.forRoot({ isGlobal: true })],
+  imports: [
+    PrismaModule,
+    UsersModule,
+    AuthModule,
+    ImageModule,
+    ProductsModule,
+    OrderModule,
+    ConfigModule.forRoot({ isGlobal: true })],
   providers:[PrismaService],
   controllers: [ProductsController, CheckoutController],
  }
