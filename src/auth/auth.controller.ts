@@ -1,17 +1,25 @@
-import { Controller, Post, Body, Res, UnauthorizedException } from '@nestjs/common';
+import { Controller, Post, Body, Res, UnauthorizedException, Get, UseGuards, Req } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { LoginDto } from './login.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { UserFromJWT } from './jwt.strategy';
 
 
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
-  @Post('logout')
-    logout(@Res({ passthrough: true }) res: Response) {
-    res.clearCookie('token');
-    return { message: 'Odjava uspješna' };
+ @Post('logout')
+logout(@Res({ passthrough: true }) res: Response) {
+  res.clearCookie('token');
+  return { message: 'Odjava uspješna' };
+
+};
+@UseGuards(AuthGuard('jwt'))
+@Get('me')
+me(@Req() req:Request & {user?:UserFromJWT}){
+  return req.user;
 }
   @Post('login')
   async login(
